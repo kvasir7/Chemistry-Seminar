@@ -1,1 +1,40 @@
+#!/bin/bash
+	
+# example.qsub
+# Example qsub job submission script for launching a parallel MrBayes job
+	
+# run the job in the current working directory
+#$ -cwd
+	
+# Job name:
+#$ -N example-job
+	
+# Use the orte (OpenMPI) runtime environment with 16 CPUs
+#$ -pe orte 16
+	
+# Send email upon job end/abort/suspend to the specified address
+# Possible values for -m are:
+#   'b'     Mail is sent at the beginning of the job.
+#   'e'     Mail is sent at the end of the job.
+#   'a'     Mail is sent when the job is aborted or rescheduled.
+#   's'     Mail is sent when the job is suspended.
+#   'n'     No mail is sent.
+#$ -M jsmith@email.com -m eas
+	
+# Output file name, all stdout goes here
+#$ -o mrbayes-out
+	
+# Errors output file name, all stderr is written to this file
+#$ -e mrbayes-err
+	
+# Export all current environment variables to the scheduled job
+#$ -V
+	
+# Execute the program
+mpirun -np 16 /share/apps/mrbayes/mb-multi myinput.nex
 
+Programs using a parallel library other than MPI (eg GAMESS) can also be launched in this manner, as well as serial programs such as Paup.
+
+To schedule the job defined in example.qsub, use the qsub command:
+
+qsub examplel.qsub
